@@ -34,6 +34,25 @@ namespace TestProjectDataBase
                 Console.WriteLine("Ошибка соединения с БД!");
             }
 
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    string sqlQuery = "SELECT ФИО FROM Person";
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connection))
+                    {
+                        adapter.Fill(dataTable);
+                        Console.WriteLine(dataTable.DefaultView.ToString());
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Ошибка соединения с БД!");
+            }
+
             Console.ReadLine();
         }
     }
