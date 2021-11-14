@@ -18,58 +18,35 @@ namespace TestProjectDataBase
 
             try
             {
+                string sqlQuery = "SELECT * FROM Person";
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string sqlQuery = "SELECT * FROM Person";
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connection))
+                    SqlCommand command = new SqlCommand(sqlQuery, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+
+                    if (reader.HasRows) // если есть данные
                     {
-                        adapter.Fill(dataTable);
-                        Console.WriteLine(dataTable.DefaultView.ToString());
+                        // выводим названия столбцов
+                        Console.WriteLine("{0}\t{1}\t{2}", reader.GetName(0), reader.GetName(1), reader.GetName(2));
+
+                        while (reader.Read()) // построчно считываем данные
+                        {
+                            object id = reader.GetValue(0);
+                            object name = reader.GetValue(1);
+                            object age = reader.GetValue(2);
+
+                            Console.WriteLine("{0} \t{1} \t{2}", id, name, age);
+                        }
                     }
+
+                    reader.Close();
                 }
             }
             catch (Exception)
             {
                 Console.WriteLine("Ошибка соединения с БД!");
             }
-
-
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    string sqlQuery = "SELECT ФИО FROM Person";
-                    using (SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connection))
-                    {
-                        adapter.Fill(dataTable);
-                        Console.WriteLine(dataTable.DefaultView.ToString());
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                Console.WriteLine("Ошибка соединения с БД!");
-            }
-
-
-            //try
-            //{
-            //    using (SqlConnection connection = new SqlConnection(connectionString))
-            //    {
-            //        connection.Open();
-            //        string sqlQuery = "INSERT INTO Person(ФИО, Возраст) VALUES('Петров И З', 25)";
-            //        using (SqlCommand command = new SqlCommand(sqlQuery, connection))
-            //        {
-            //            command.ExecuteNonQuery();
-            //        }
-            //    }
-            //}
-            //catch (Exception)
-            //{
-            //    Console.WriteLine("Ошибка соединения с БД!");
-            //}
 
             try
             {
