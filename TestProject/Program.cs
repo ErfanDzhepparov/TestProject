@@ -21,7 +21,7 @@ namespace TestProjectDataBase
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
                     connection.Open();
-                    string sqlQuery = "SELECT ФИО FROM Person";
+                    string sqlQuery = "SELECT * FROM Person";
                     using (SqlDataAdapter adapter = new SqlDataAdapter(sqlQuery, connection))
                     {
                         adapter.Fill(dataTable);
